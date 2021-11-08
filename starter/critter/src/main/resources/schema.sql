@@ -54,14 +54,8 @@ create table if not exists pet
     name       varchar(255),
     notes      varchar(255),
     owner_id   bigint,
-    type       varchar(50),
+    type       integer,
     primary key (id)
-);
-
-create table if not exists customer_pets
-(
-    customer_id bigint not null,
-    pet_id      bigint not null
 );
 
 create table if not exists schedule_pets

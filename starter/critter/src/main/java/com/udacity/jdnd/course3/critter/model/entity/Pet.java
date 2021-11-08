@@ -1,11 +1,11 @@
 package com.udacity.jdnd.course3.critter.model.entity;
 
 import com.udacity.jdnd.course3.critter.model.pet.PetType;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -16,15 +16,21 @@ import java.time.LocalDate;
  * 2. Schedule-Pet Table (many to many)
  **/
 @Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Pet {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private PetType type;
     private String name;
-    private Long ownerId;
+    @ManyToOne
+    private Customer owner;
     private LocalDate birthDate;
     private String notes;
 
+    public Pet(Long id) {
+        this.id = id;
+    }
 }

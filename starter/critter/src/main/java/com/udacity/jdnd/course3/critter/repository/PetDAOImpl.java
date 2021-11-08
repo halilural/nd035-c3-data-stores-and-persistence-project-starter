@@ -3,6 +3,7 @@ package com.udacity.jdnd.course3.critter.repository;
 import com.udacity.jdnd.course3.critter.mapper.PetMapper;
 import com.udacity.jdnd.course3.critter.mapper.PetMapperImpl;
 import com.udacity.jdnd.course3.critter.model.dto.PetDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,12 +19,11 @@ import java.util.List;
 
 @Repository
 @Transactional
+@Slf4j
 public class PetDAOImpl implements PetDAO {
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
-
-    private PetMapper petMapper = new PetMapperImpl();
 
     // Properties
 
@@ -65,11 +65,13 @@ public class PetDAOImpl implements PetDAO {
                         .addValue(NOTES, petDTO.getNotes())
                         .addValue(OWNER_ID, petDTO.getOwnerId())
                         .addValue(BIRTH_DATE, petDTO.getBirthDate()), keyHolder);
+        log.info("Pet is created with id: " + keyHolder.getKey().longValue());
         return keyHolder.getKey().longValue();
     }
 
     @Override
     public PetDTO getPet(long petId) {
+        log.info("Getting pet wth id: " + petId);
         return jdbcTemplate.queryForObject(SELECT_PET,
                 new MapSqlParameterSource()
                         .addValue(ID, petId),
@@ -78,11 +80,13 @@ public class PetDAOImpl implements PetDAO {
 
     @Override
     public List<PetDTO> getPets() {
+        log.info("Getting pets...");
         return jdbcTemplate.query(SELECT_PETS, petDTORowMapper);
     }
 
     @Override
     public List<PetDTO> getPetsByOwner(long ownerId) {
+        log.info("Getting pet wth owner id: " + ownerId);
         return jdbcTemplate.query(SELECT_PET_WITH_OWNER,
                 new MapSqlParameterSource()
                         .addValue(OWNER_ID, ownerId),

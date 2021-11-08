@@ -16,9 +16,9 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
     @Nationalized
-    private String name;
+    protected String name;
 
 }
