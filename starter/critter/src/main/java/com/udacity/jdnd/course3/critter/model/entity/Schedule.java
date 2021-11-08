@@ -29,8 +29,9 @@ import java.util.Set;
                 @NamedQuery(
                         name = "Schedule.findAllByEmployeeId",
                         query = "select s from Schedule s " +
-                                "inner join fetch s.employees e " +
-                                "where e.employee.id = :employeeId "
+                                "inner join fetch s.employees se " +
+                                "inner join fetch se.employee e " +
+                                "where e.id = :employeeId "
                 ),
                 @NamedQuery(
                         name = "Schedule.findAllByCustomerId",
@@ -59,7 +60,7 @@ public class Schedule implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "schedule", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "schedule", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<ScheduleEmployee> employees = new HashSet<>();
 
     @Column(name = "date")

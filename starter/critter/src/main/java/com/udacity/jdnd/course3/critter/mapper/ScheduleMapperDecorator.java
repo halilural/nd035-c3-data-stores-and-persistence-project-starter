@@ -5,7 +5,7 @@ import com.udacity.jdnd.course3.critter.model.dto.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.model.entity.Employee;
 import com.udacity.jdnd.course3.critter.model.entity.Pet;
 import com.udacity.jdnd.course3.critter.model.entity.Schedule;
-import com.udacity.jdnd.course3.critter.model.entity.User;
+import com.udacity.jdnd.course3.critter.model.entity.ScheduleEmployee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +22,20 @@ public abstract class ScheduleMapperDecorator implements ScheduleMapper {
     @Override
     public ScheduleDTO asDTO(Schedule schedule) {
         ScheduleDTO dto = delegate.asDTO(schedule);
-        dto.setEmployeeIds(schedule.getEmployees().stream().map(User::getId).collect(Collectors.toList()));
-        dto.setPetIds(schedule.getPets().stream().map(Pet::getId).collect(Collectors.toList()));
+        if (schedule.getEmployees() != null && !schedule.getEmployees().isEmpty())
+            dto.setEmployeeIds(schedule.getEmployees().stream().map(scheduleEmployee -> scheduleEmployee.getEmployee().getId()).collect(Collectors.toList()));
+        if (schedule.getPets() != null && !schedule.getPets().isEmpty())
+            dto.setPetIds(schedule.getPets().stream().map(Pet::getId).collect(Collectors.toList()));
         return dto;
     }
 
     @Override
     public Schedule asEntity(ScheduleDTO dto) {
         Schedule entity = delegate.asEntity(dto);
-        entity.setEmployees(dto.getEmployeeIds().stream().map(Employee::new).collect(Collectors.toSet()));
-        entity.setPets(dto.getPetIds().stream().map(Pet::new).collect(Collectors.toList()));
+        if (dto.getEmployeeIds() != null && !dto.getEmployeeIds().isEmpty())
+            entity.setEmployees(dto.getEmployeeIds().stream().map(id -> new ScheduleEmployee(entity, new Employee(id))).collect(Collectors.toSet()));
+        if (dto.getPetIds() != null && !dto.getPetIds().isEmpty())
+            entity.setPets(dto.getPetIds().stream().map(Pet::new).collect(Collectors.toList()));
         return entity;
     }
 

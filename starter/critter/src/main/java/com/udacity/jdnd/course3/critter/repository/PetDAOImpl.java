@@ -1,7 +1,5 @@
 package com.udacity.jdnd.course3.critter.repository;
 
-import com.udacity.jdnd.course3.critter.mapper.PetMapper;
-import com.udacity.jdnd.course3.critter.mapper.PetMapperImpl;
 import com.udacity.jdnd.course3.critter.model.dto.PetDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +58,7 @@ public class PetDAOImpl implements PetDAO {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(INSERT_PET,
                 new MapSqlParameterSource()
-                        .addValue(TYPE, petDTO.getType().name())
+                        .addValue(TYPE, petDTO.getType().getValue())
                         .addValue(NAME, petDTO.getName())
                         .addValue(NOTES, petDTO.getNotes())
                         .addValue(OWNER_ID, petDTO.getOwnerId())
