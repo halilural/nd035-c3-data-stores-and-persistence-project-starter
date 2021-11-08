@@ -30,7 +30,7 @@ import java.util.Set;
                         name = "Schedule.findAllByEmployeeId",
                         query = "select s from Schedule s " +
                                 "inner join fetch s.employees e " +
-                                "where e.id = :employeeId "
+                                "where e.employee.id = :employeeId "
                 ),
                 @NamedQuery(
                         name = "Schedule.findAllByCustomerId",
@@ -38,6 +38,13 @@ import java.util.Set;
                                 "inner join fetch s.pets p " +
                                 "inner join fetch p.owner c " +
                                 "where c.id = :customerId "
+                ),
+                @NamedQuery(
+                        name = "Schedule.findAllByDateAndSkills",
+                        query = "select s from Schedule s " +
+                                "inner join fetch s.activities a " +
+                                "where s.date = :date " +
+                                "and a in :skills "
                 )
         }
 )
@@ -52,10 +59,8 @@ public class Schedule implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "schedule_employees", joinColumns = @JoinColumn(name = "schedule_id"),
-            inverseJoinColumns = @JoinColumn(name = "employees_id"))
-    private Set<Employee> employees = new HashSet<>();
+    @OneToMany(mappedBy = "schedule", fetch = FetchType.EAGER)
+    private Set<ScheduleEmployee> employees = new HashSet<>();
 
     @Column(name = "date")
     private LocalDate date;

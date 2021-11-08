@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.time.DayOfWeek;
 import java.util.Set;
 
@@ -22,6 +23,9 @@ public class Employee extends User {
 
     @ElementCollection
     private Set<DayOfWeek> daysAvailable;
+
+    @OneToMany(mappedBy = "employee")
+    private Set<ScheduleEmployee> schedules;
 
     public Employee(Long id) {
         this.setId(id);
