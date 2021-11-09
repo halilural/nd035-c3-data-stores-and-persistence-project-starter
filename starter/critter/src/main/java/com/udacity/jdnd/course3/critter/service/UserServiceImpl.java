@@ -6,7 +6,6 @@ import com.udacity.jdnd.course3.critter.exception.EmployeeNotFoundException;
 import com.udacity.jdnd.course3.critter.model.employee.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.model.entity.Customer;
 import com.udacity.jdnd.course3.critter.model.entity.Employee;
-import com.udacity.jdnd.course3.critter.model.entity.Pet;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
+    @Autowired
+    private PetService petService;
 
     @Override
     public Customer saveCustomer(Customer customer) {
@@ -39,16 +40,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+        return fillPetsForCustomers(customerRepository.findAll());
     }
 
     @Override
     public Customer getOwnerByPet(long petId) {
-        Pet pet = new Pet(petId);
-        Customer customer = customerRepository.findByPetsIn(List.of(pet)).orElseThrow(
+        Customer customer = customerRepository.findByPetsIn(petId).orElseThrow(
                 () -> new CustomerNotFoundException("Customer with the pet id: " + petId + " not found")
         );
-        return customer;
+        return fillPetsForCustomer(customer);
     }
 
     @Override
@@ -81,4 +81,20 @@ public class UserServiceImpl implements UserService {
         }
         return availableEmployees;
     }
+
+    private List<Customer> fillPetsForCustomers(List<Customer> customers) {
+        List<Customer> customerList = new ArrayList<>();
+        for (Customer customer : customers) {
+            Customer newCustomer = fillPetsForCustomer(customer);
+            customerList.add(newCustomer);
+        }
+        return customerList;
+    }
+
+    private Customer fillPetsForCustomer(Customer customer) {
+        customer.setPets(petService.getPetsByOwner(customer.getId()));
+        return customer;
+    }
+
+
 }

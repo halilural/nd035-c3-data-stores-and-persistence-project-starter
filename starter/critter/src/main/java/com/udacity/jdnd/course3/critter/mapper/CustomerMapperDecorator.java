@@ -2,8 +2,8 @@ package com.udacity.jdnd.course3.critter.mapper;
 
 
 import com.udacity.jdnd.course3.critter.model.dto.CustomerDTO;
+import com.udacity.jdnd.course3.critter.model.dto.PetDTO;
 import com.udacity.jdnd.course3.critter.model.entity.Customer;
-import com.udacity.jdnd.course3.critter.model.entity.Pet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public abstract class CustomerMapperDecorator implements CustomerMapper {
     public CustomerDTO asDTO(Customer entity) {
         CustomerDTO dto = delegate.asDTO(entity);
         if (entity.getPets() != null && !entity.getPets().isEmpty())
-            dto.setPetIds(entity.getPets().stream().map(Pet::getId).collect(Collectors.toList()));
+            dto.setPetIds(entity.getPets().stream().map(PetDTO::getId).collect(Collectors.toList()));
         return dto;
     }
 
@@ -29,7 +29,7 @@ public abstract class CustomerMapperDecorator implements CustomerMapper {
     public Customer asEntity(CustomerDTO dto) {
         Customer entity = delegate.asEntity(dto);
         if (dto.getPetIds() != null && !dto.getPetIds().isEmpty())
-            entity.setPets(dto.getPetIds().stream().map(Pet::new).collect(Collectors.toList()));
+            entity.setPets(dto.getPetIds().stream().map(PetDTO::new).collect(Collectors.toList()));
         return entity;
     }
 

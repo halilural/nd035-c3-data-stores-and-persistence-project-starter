@@ -61,7 +61,7 @@ public class PetDAOImpl implements PetDAO {
                         .addValue(TYPE, petDTO.getType().getValue())
                         .addValue(NAME, petDTO.getName())
                         .addValue(NOTES, petDTO.getNotes())
-                        .addValue(CUSTOMER_ID, petDTO.getOwnerId())
+                        .addValue(CUSTOMER_ID, petDTO.getCustomerId())
                         .addValue(BIRTH_DATE, petDTO.getBirthDate()), keyHolder);
         log.info("Pet is created with id: " + keyHolder.getKey().longValue());
         return keyHolder.getKey().longValue();
