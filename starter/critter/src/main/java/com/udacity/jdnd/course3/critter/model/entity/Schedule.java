@@ -37,7 +37,7 @@ import java.util.Set;
                         name = "Schedule.findAllByCustomerId",
                         query = "select s from Schedule s " +
                                 "inner join fetch s.pets p " +
-                                "inner join fetch p.owner c " +
+                                "inner join fetch p.customer c " +
                                 "where c.id = :customerId "
                 ),
                 @NamedQuery(

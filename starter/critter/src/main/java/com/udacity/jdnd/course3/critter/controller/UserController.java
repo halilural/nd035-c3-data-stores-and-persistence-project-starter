@@ -1,10 +1,13 @@
 package com.udacity.jdnd.course3.critter.controller;
 
 
+import com.udacity.jdnd.course3.critter.mapper.CustomerMapper;
+import com.udacity.jdnd.course3.critter.mapper.CustomerMapperImpl;
+import com.udacity.jdnd.course3.critter.mapper.EmployeeMapper;
+import com.udacity.jdnd.course3.critter.mapper.EmployeeMapperImpl;
 import com.udacity.jdnd.course3.critter.model.dto.CustomerDTO;
 import com.udacity.jdnd.course3.critter.model.dto.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.model.dto.EmployeeRequestDTO;
-import com.udacity.jdnd.course3.critter.model.entity.Employee;
 import com.udacity.jdnd.course3.critter.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,32 +26,36 @@ import java.util.Set;
 @RequestMapping("/user")
 public class UserController {
 
+    private final CustomerMapper customerMapper = new CustomerMapperImpl();
+
+    private final EmployeeMapper employeeMapper = new EmployeeMapperImpl();
+
     @Autowired
     private UserServiceImpl userService;
 
     @PostMapping("/customer")
     public CustomerDTO saveCustomer(@RequestBody CustomerDTO customerDTO) {
-        return userService.saveCustomer(customerDTO);
+        return customerMapper.asDTO(userService.saveCustomer(customerMapper.asEntity(customerDTO)));
     }
 
     @GetMapping("/customer")
     public List<CustomerDTO> getAllCustomers() {
-        return userService.getAllCustomers();
+        return customerMapper.asDTO(userService.getAllCustomers());
     }
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId) {
-        return userService.getOwnerByPet(petId);
+        return customerMapper.asDTO(userService.getOwnerByPet(petId));
     }
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return userService.saveEmployee(employeeDTO);
+        return employeeMapper.asDTO(userService.saveEmployee(employeeMapper.asEntity(employeeDTO)));
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        return userService.getEmployee(employeeId);
+        return employeeMapper.asDTO(userService.getEmployee(employeeId));
     }
 
     @PutMapping("/employee/{employeeId}")
@@ -58,7 +65,7 @@ public class UserController {
 
     @GetMapping("/employee/availability")
     public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        List<EmployeeDTO> ees =  userService.findEmployeesForService(employeeDTO.getSkills(), employeeDTO.getDate().getDayOfWeek());
+        List<EmployeeDTO> ees = employeeMapper.asDTO(userService.findEmployeesForService(employeeDTO.getSkills(), employeeDTO.getDate().getDayOfWeek()));
         return ees;
     }
 

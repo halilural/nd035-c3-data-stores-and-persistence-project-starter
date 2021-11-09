@@ -49,12 +49,12 @@ create table if not exists schedule_employees
 
 create table if not exists pet
 (
-    id         bigint not null auto_increment,
-    birth_date date,
-    name       varchar(255),
-    notes      varchar(255),
-    owner_id   bigint,
-    type       integer,
+    id          bigint not null auto_increment,
+    birth_date  date,
+    name        varchar(255),
+    notes       varchar(255),
+    customer_id bigint,
+    type        integer,
     primary key (id)
 );
 

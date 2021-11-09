@@ -1,19 +1,19 @@
 package com.udacity.jdnd.course3.critter.service;
 
-import com.udacity.jdnd.course3.critter.model.dto.ScheduleDTO;
+import com.udacity.jdnd.course3.critter.model.entity.Schedule;
 
 import java.util.List;
 
 public interface ScheduleService {
 
-    ScheduleDTO createSchedule(ScheduleDTO scheduleDTO);
+    Schedule createSchedule(Schedule schedule);
 
-    List<ScheduleDTO> getAllSchedules();
+    List<Schedule> getAllSchedules();
 
-    List<ScheduleDTO> getScheduleForPet(long petId);
+    List<Schedule> getScheduleForPet(long petId);
 
-    List<ScheduleDTO> getScheduleForEmployee(long employeeId);
+    List<Schedule> getScheduleForEmployee(long employeeId);
 
-    List<ScheduleDTO> getScheduleForCustomer(long customerId);
+    List<Schedule> getScheduleForCustomer(long customerId);
 
 }

@@ -1,9 +1,6 @@
 package com.udacity.jdnd.course3.critter.repository;
 
 
-import com.udacity.jdnd.course3.critter.mapper.ScheduleMapper;
-import com.udacity.jdnd.course3.critter.mapper.ScheduleMapperImpl;
-import com.udacity.jdnd.course3.critter.model.dto.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.model.employee.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.model.entity.Schedule;
 import lombok.extern.slf4j.Slf4j;
@@ -24,11 +21,8 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final ScheduleMapper scheduleMapper = new ScheduleMapperImpl();
-
     @Override
-    public Schedule createSchedule(ScheduleDTO scheduleDTO) {
-        Schedule schedule = scheduleMapper.asEntity(scheduleDTO);
+    public Schedule createSchedule(Schedule schedule) {
         entityManager.persist(schedule);
         return schedule;
     }

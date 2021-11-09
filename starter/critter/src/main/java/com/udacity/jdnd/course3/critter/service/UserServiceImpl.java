@@ -3,15 +3,10 @@ package com.udacity.jdnd.course3.critter.service;
 
 import com.udacity.jdnd.course3.critter.exception.CustomerNotFoundException;
 import com.udacity.jdnd.course3.critter.exception.EmployeeNotFoundException;
-import com.udacity.jdnd.course3.critter.mapper.CustomerMapper;
-import com.udacity.jdnd.course3.critter.mapper.CustomerMapperImpl;
-import com.udacity.jdnd.course3.critter.mapper.EmployeeMapper;
-import com.udacity.jdnd.course3.critter.mapper.EmployeeMapperImpl;
-import com.udacity.jdnd.course3.critter.model.dto.CustomerDTO;
-import com.udacity.jdnd.course3.critter.model.dto.EmployeeDTO;
 import com.udacity.jdnd.course3.critter.model.employee.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.model.entity.Customer;
 import com.udacity.jdnd.course3.critter.model.entity.Employee;
+import com.udacity.jdnd.course3.critter.model.entity.Pet;
 import com.udacity.jdnd.course3.critter.repository.CustomerRepository;
 import com.udacity.jdnd.course3.critter.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,36 +26,34 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    private final CustomerMapper customerMapper = new CustomerMapperImpl();
-
-    private final EmployeeMapper employeeMapper = new EmployeeMapperImpl();
 
     @Override
-    public CustomerDTO saveCustomer(CustomerDTO customerDTO) {
-        return customerMapper.asDTO(customerRepository.save(customerMapper.asEntity(customerDTO)));
+    public Customer saveCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     @Override
-    public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
-        return employeeMapper.asDTO(employeeRepository.save(employeeMapper.asEntity(employeeDTO)));
+    public Employee saveEmployee(Employee employee) {
+        return employeeRepository.save(employee);
     }
 
     @Override
-    public List<CustomerDTO> getAllCustomers() {
-        return customerMapper.asDTO(customerRepository.findAll());
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
     }
 
     @Override
-    public CustomerDTO getOwnerByPet(long petId) {
-        Customer customer = customerRepository.findByPetId(petId).orElseThrow(
+    public Customer getOwnerByPet(long petId) {
+        Pet pet = new Pet(petId);
+        Customer customer = customerRepository.findByPetsIn(List.of(pet)).orElseThrow(
                 () -> new CustomerNotFoundException("Customer with the pet id: " + petId + " not found")
         );
-        return customerMapper.asDTO(customer);
+        return customer;
     }
 
     @Override
-    public EmployeeDTO getEmployee(long employeeId) {
-        return employeeMapper.asDTO(getEmployeeEntity(employeeId));
+    public Employee getEmployee(long employeeId) {
+        return getEmployeeEntity(employeeId);
     }
 
     @Override
@@ -78,7 +71,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<EmployeeDTO> findEmployeesForService(Set<EmployeeSkill> skills, DayOfWeek dayOfWeek) {
+    public List<Employee> findEmployeesForService(Set<EmployeeSkill> skills, DayOfWeek dayOfWeek) {
         List<Employee> employees = employeeRepository.findAllByDaysAvailableContaining(dayOfWeek);
         List<Employee> availableEmployees = new ArrayList<>();
         for (Employee e : employees) {
@@ -86,6 +79,6 @@ public class UserServiceImpl implements UserService {
                 availableEmployees.add(e);
             }
         }
-        return employeeMapper.asDTO(availableEmployees);
+        return availableEmployees;
     }
 }

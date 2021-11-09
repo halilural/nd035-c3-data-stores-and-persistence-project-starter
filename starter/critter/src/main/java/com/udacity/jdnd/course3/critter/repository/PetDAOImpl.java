@@ -29,14 +29,14 @@ public class PetDAOImpl implements PetDAO {
     private static final String TYPE = "type";
     private static final String NAME = "name";
     private static final String NOTES = "notes";
-    private static final String OWNER_ID = "owner_id";
+    private static final String CUSTOMER_ID = "customer_id";
     private static final String BIRTH_DATE = "birth_date";
 
     // Queries
 
     private static final String INSERT_PET =
-            "INSERT INTO pet (type, name, owner_id, birth_date, notes) " +
-                    "VALUES (:" + TYPE + ", :" + NAME + ", :" + OWNER_ID + ", :" + BIRTH_DATE + ", :" + NOTES + ")";
+            "INSERT INTO pet (type, name, customer_id, birth_date, notes) " +
+                    "VALUES (:" + TYPE + ", :" + NAME + ", :" + CUSTOMER_ID + ", :" + BIRTH_DATE + ", :" + NOTES + ")";
 
     private static final String SELECT_PET =
             "SELECT * FROM pet WHERE id = :" + ID;
@@ -45,7 +45,7 @@ public class PetDAOImpl implements PetDAO {
             "SELECT * FROM pet";
 
     private static final String SELECT_PET_WITH_OWNER =
-            "SELECT * FROM pet WHERE owner_id = :" + OWNER_ID;
+            "SELECT * FROM pet WHERE customer_id = :" + CUSTOMER_ID;
 
     // Mapper
 
@@ -61,7 +61,7 @@ public class PetDAOImpl implements PetDAO {
                         .addValue(TYPE, petDTO.getType().getValue())
                         .addValue(NAME, petDTO.getName())
                         .addValue(NOTES, petDTO.getNotes())
-                        .addValue(OWNER_ID, petDTO.getOwnerId())
+                        .addValue(CUSTOMER_ID, petDTO.getOwnerId())
                         .addValue(BIRTH_DATE, petDTO.getBirthDate()), keyHolder);
         log.info("Pet is created with id: " + keyHolder.getKey().longValue());
         return keyHolder.getKey().longValue();
@@ -87,7 +87,7 @@ public class PetDAOImpl implements PetDAO {
         log.info("Getting pet wth owner id: " + ownerId);
         return jdbcTemplate.query(SELECT_PET_WITH_OWNER,
                 new MapSqlParameterSource()
-                        .addValue(OWNER_ID, ownerId),
+                        .addValue(CUSTOMER_ID, ownerId),
                 petDTORowMapper);
     }
 

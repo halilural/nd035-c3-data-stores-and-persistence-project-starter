@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Data
@@ -19,7 +19,7 @@ public class Customer extends User {
     private String phoneNumber;
     private String notes;
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<Pet> petSet = new HashSet<>();
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private List<Pet> pets;
 
 }

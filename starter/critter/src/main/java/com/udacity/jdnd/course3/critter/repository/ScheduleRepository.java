@@ -1,6 +1,5 @@
 package com.udacity.jdnd.course3.critter.repository;
 
-import com.udacity.jdnd.course3.critter.model.dto.ScheduleDTO;
 import com.udacity.jdnd.course3.critter.model.employee.EmployeeSkill;
 import com.udacity.jdnd.course3.critter.model.entity.Schedule;
 
@@ -10,7 +9,7 @@ import java.util.Set;
 
 public interface ScheduleRepository {
 
-    Schedule createSchedule(ScheduleDTO schedule);
+    Schedule createSchedule(Schedule schedule);
 
     List<Schedule> getAllSchedules();
 

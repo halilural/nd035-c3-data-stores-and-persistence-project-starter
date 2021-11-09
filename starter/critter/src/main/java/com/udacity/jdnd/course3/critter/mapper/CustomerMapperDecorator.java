@@ -20,8 +20,8 @@ public abstract class CustomerMapperDecorator implements CustomerMapper {
     @Override
     public CustomerDTO asDTO(Customer entity) {
         CustomerDTO dto = delegate.asDTO(entity);
-        if (entity.getPetSet() != null && !entity.getPetSet().isEmpty())
-            dto.setPetIds(entity.getPetSet().stream().map(Pet::getId).collect(Collectors.toList()));
+        if (entity.getPets() != null && !entity.getPets().isEmpty())
+            dto.setPetIds(entity.getPets().stream().map(Pet::getId).collect(Collectors.toList()));
         return dto;
     }
 
@@ -29,7 +29,7 @@ public abstract class CustomerMapperDecorator implements CustomerMapper {
     public Customer asEntity(CustomerDTO dto) {
         Customer entity = delegate.asEntity(dto);
         if (dto.getPetIds() != null && !dto.getPetIds().isEmpty())
-            entity.setPetSet(dto.getPetIds().stream().map(Pet::new).collect(Collectors.toSet()));
+            entity.setPets(dto.getPetIds().stream().map(Pet::new).collect(Collectors.toList()));
         return entity;
     }
 

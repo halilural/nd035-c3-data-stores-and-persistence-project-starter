@@ -5,12 +5,12 @@ set id           = 1,
     phone_number = '999999999';
 
 insert ignore into pet
-set id         = 1,
-    birth_date = now(),
-    name       = 'Cat',
-    notes      = 'Kitty Cat',
-    owner_id   = 1,
-    type       = 0;
+set id          = 1,
+    birth_date  = now(),
+    name        = 'Cat',
+    notes       = 'Kitty Cat',
+    customer_id = 1,
+    type        = 0;
 
 #employee
 

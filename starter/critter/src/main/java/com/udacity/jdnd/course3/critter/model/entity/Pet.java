@@ -19,14 +19,16 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "pet")
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private PetType type;
     private String name;
-    @ManyToOne
-    private Customer owner;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
     private LocalDate birthDate;
     private String notes;
 
