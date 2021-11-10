@@ -16,7 +16,6 @@ import java.util.List;
 
 
 @Repository
-@Transactional
 @Slf4j
 public class PetDAOImpl implements PetDAO {
 

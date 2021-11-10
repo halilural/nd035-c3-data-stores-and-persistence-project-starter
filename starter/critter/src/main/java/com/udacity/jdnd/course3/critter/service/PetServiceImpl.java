@@ -6,9 +6,11 @@ import com.udacity.jdnd.course3.critter.model.dto.PetDTO;
 import com.udacity.jdnd.course3.critter.repository.PetDAO;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class PetServiceImpl implements PetService {
 
     private PetDAO petDAO;

@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Set;
 
 @Repository
-@Transactional
 @Slf4j
 public class ScheduleRepositoryImpl implements ScheduleRepository {
 
